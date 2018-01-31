@@ -1,0 +1,26 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: "hello"
+  labels:
+    chart: {{ .Chart.Name }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: "hello"
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: "hello"
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: "hello"
+          image: gcr.io/playerdotme-staging/anfa-nodejs-hello
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8000
