@@ -1,0 +1,37 @@
+apiVersion: apps/v1beta1 # for versions before 1.6.0 use extensions/v1beta1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.REDIS_SVC_NAME }}
+spec:
+  serviceName: {{ .Values.REDIS_SVC_NAME }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.REDIS_SVC_NAME }}
+    spec:
+      volumes:
+      - name: redis-persistent-storage
+        emptyDir: {}
+      containers:
+      - name: {{ .Values.REDIS_SVC_NAME }}
+        image: redis:4.0.5-alpine
+        ports:
+        - containerPort: 27017
+          name: {{ .Values.REDIS_SVC_NAME }}
+        volumeMounts:
+        - mountPath: "/data"
+          name: redis-persistent-storage
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.REDIS_SVC_NAME }}
+spec:
+  selector:
+    app: {{ .Values.REDIS_SVC_NAME }}
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379

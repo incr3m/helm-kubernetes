@@ -1,0 +1,21 @@
+{
+  "name": "http-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "build-docker": "docker build -t gcr.io/playerdotme-staging/anfa-nodejs-hello:master-4 -t gcr.io/playerdotme-staging/anfa-nodejs-hello:latest .",
+    "push-docker-latest": "gcloud docker -- push gcr.io/playerdotme-staging/anfa-nodejs-hello:latest",
+    "push-docker-versioned": "gcloud docker -- push gcr.io/playerdotme-staging/anfa-nodejs-hello:master-4",
+    "push-docker": "npm run push-docker-latest && npm run push-docker-versioned"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "express": "^4.16.2",
+    "redis": "^2.8.0"
+  }
+}

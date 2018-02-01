@@ -1,0 +1,44 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}
+  labels:
+    chart: {{ .Chart.Name }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    sample: samplelabel3
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Values.appName }}
+          image: {{.Values.image.repository}}:{{.Values.image.tag}}
+          imagePullPolicy: {{default "Always" .Values.image.pullPolicy}}
+          ports:
+            - containerPort: {{ .Values.appPort }}
+              name: app-port
+          env:
+            - name: REDIS_HOST
+              value: "{{.Values.REDIS_SVC_NAME}}"
+          livenessProbe:
+            httpGet:
+              path: /alive
+              port: app-port
+            initialDelaySeconds: 10
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: app-port
+            initialDelaySeconds: 5
+            periodSeconds: 3
+    
