@@ -3,13 +3,15 @@ kubernetes
     - services ✓
     - ingress ✓
     - volumes ✓
-    - probes 
+    - probes ✓
         - deploy 10 replicas # kubectl scale deployment helm-sample2 --replicas=4
         - use probes to check liveness
             - try 1000 requests while updating(helm update)
             - should have no 500s
+    - rolling updates with ab ✓
 helm
     - deployment ✓
     - services ✓
     - ingress ✓
     - volumes ✓
+    - Partials and _ files

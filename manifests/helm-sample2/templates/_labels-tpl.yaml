@@ -1,0 +1,3 @@
+{{- define "labels" -}}
+release: {{.Release.Name | quote }}
+{{- end -}}

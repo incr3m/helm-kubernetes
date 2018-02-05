@@ -2,6 +2,7 @@ apiVersion: apps/v1beta1 # for versions before 1.6.0 use extensions/v1beta1
 kind: StatefulSet
 metadata:
   name: {{ .Values.REDIS_SVC_NAME }}
+{{ include "labels" . | indent 2 }}
 spec:
   serviceName: {{ .Values.REDIS_SVC_NAME }}
   replicas: 1
@@ -10,28 +11,36 @@ spec:
       labels:
         app: {{ .Values.REDIS_SVC_NAME }}
     spec:
-      volumes:
-      - name: redis-persistent-storage
-        emptyDir: {}
       containers:
       - name: {{ .Values.REDIS_SVC_NAME }}
         image: redis:4.0.5-alpine
         ports:
-        - containerPort: 27017
+        - containerPort: 6379
           name: {{ .Values.REDIS_SVC_NAME }}
         volumeMounts:
         - mountPath: "/data"
-          name: redis-persistent-storage
+          name: anfa-redis-persistent-storage
+  volumeClaimTemplates:
+  - metadata:
+      name: anfa-redis-persistent-storage
+      annotations:
+        volume.beta.kubernetes.io/storage-class: 'standard'
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 5Gi
 ---
 kind: Service
 apiVersion: v1
 metadata:
   name: {{ .Values.REDIS_SVC_NAME }}
+{{ include "labels" . | indent 2 }}
 spec:
   selector:
     app: {{ .Values.REDIS_SVC_NAME }}
-  type: NodePort
+  type: {{ .Values.service.type }}
   ports:
-    - protocol: TCP
-      port: 6379
-      targetPort: 6379
+  - port: 6379
+    protocol: TCP
+

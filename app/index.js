@@ -19,6 +19,7 @@ client.on("error", function (err) {
 
 const VISITOR_CTR_KEY = 'VISITOR_CTR';
 const APP_PORT = 8000;
+const NOT_READY_PORT = 500;
 let appStartTime;
 let ready = false;
 function getElapsed(startTime, endTime) {
@@ -42,13 +43,13 @@ function isReady(){
 
 app.get('/', async(req, res) => {
   if(!isReady()){
-    res.status(404).json({ok:false});
+    res.status(NOT_READY_PORT).json({ok:false});
     return
   }
   let count = (await client.getAsync(VISITOR_CTR_KEY)) || 0;
   const ret = await client.setAsync(VISITOR_CTR_KEY, Number(count)+1);
   if(ret === 'OK'){
-    res.send("Haio! You are visitor number:"+count+"\n");
+    res.send("Ola Amigo! You are visitor number:"+count+"\n");
   }
   else{
     res.send(JSON.stringify(ret));
@@ -62,7 +63,7 @@ app.get('/alive', async(req, res) => {
 app.get('/ready', async(req, res) => {
   
   if(!isReady()){
-    res.status(404).json({ok:false});
+    res.status(NOT_READY_PORT).json({ok:false});
     return;
   }
   res.status(200).json({ok:true});

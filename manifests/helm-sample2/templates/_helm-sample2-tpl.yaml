@@ -1,0 +1,9 @@
+{{- define "create_container" -}}
+image: {{.Values.REGISTRY}}/{{.Values.image.name}}:{{default "master" .Values.image.tag}}
+imagePullPolicy: {{default "Always" .Values.imagePullPolicy}}
+{{- end -}}
+
+{{- define "create_env" -}}
+- name: REDIS_HOST
+  value: "{{.Values.REDIS_SVC_NAME}}"
+{{- end -}}

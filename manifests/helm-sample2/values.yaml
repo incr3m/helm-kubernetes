@@ -1,14 +1,15 @@
 replicaCount: 1
 
+REDIS_SVC_NAME: redis
+REGISTRY: gcr.io/playerdotme-staging
+
 appName: helm-sample2
 appPort: 8000
 serviceName: helm-sample2-service
 
 image:
-  repository: gcr.io/playerdotme-staging/anfa-nodejs-hello
-  tag: master-4
+  name: anfa-nodejs-hello
+  tag: master-8
 
 service:
   type: ClusterIP
-
-REDIS_SVC_NAME: redis

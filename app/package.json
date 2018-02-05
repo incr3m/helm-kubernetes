@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "build-docker": "docker build -t gcr.io/playerdotme-staging/anfa-nodejs-hello:master-4 -t gcr.io/playerdotme-staging/anfa-nodejs-hello:latest .",
+    "build-docker": "docker build -t gcr.io/playerdotme-staging/anfa-nodejs-hello:master-8 -t gcr.io/playerdotme-staging/anfa-nodejs-hello:latest .",
     "push-docker-latest": "gcloud docker -- push gcr.io/playerdotme-staging/anfa-nodejs-hello:latest",
-    "push-docker-versioned": "gcloud docker -- push gcr.io/playerdotme-staging/anfa-nodejs-hello:master-4",
+    "push-docker-versioned": "gcloud docker -- push gcr.io/playerdotme-staging/anfa-nodejs-hello:master-8",
     "push-docker": "npm run push-docker-latest && npm run push-docker-versioned"
   },
   "author": "",
