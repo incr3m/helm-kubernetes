@@ -13,5 +13,9 @@ helm
     - deployment ✓
     - services ✓
     - ingress ✓
+        helm install stable/nginx-ingress --name my-nginx
     - volumes ✓
-    - Partials and _ files
+    - Partials and _ files ✓
+    - Kube-lego(lets encrypt) ✓
+        helm install --name helm-kube-lego --set config.LEGO_EMAIL=ajcastelfaller@gmail.com,config.LEGO_URL=https://acme-v01.api.letsencrypt.org/directory     stable/kube-lego
+    
