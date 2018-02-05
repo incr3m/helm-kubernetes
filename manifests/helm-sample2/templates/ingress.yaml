@@ -3,8 +3,10 @@ kind: Ingress
 metadata:
   name: {{ .Values.appName }}-ingress
   annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: / #Since nginx-ingress-controller:0.9.0-beta.18, annotations prefix defaults to nginx.ingress.kubernetes.io. 
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
+
 spec:
   rules:
   - host: anfa.ml
@@ -12,7 +14,15 @@ spec:
       paths:
       - path: /
         backend:
+          serviceName: {{ .Values.serviceName }}-index
+          servicePort: {{ .Values.appPort }}
+      - path: /app
+        backend:
           serviceName: {{ .Values.serviceName }}
+          servicePort: {{ .Values.appPort }}
+      - path: /api
+        backend:
+          serviceName: {{ .Values.serviceName }}-api
           servicePort: {{ .Values.appPort }}
   tls:
   - hosts:

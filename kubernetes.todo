@@ -9,6 +9,8 @@ kubernetes
             - try 1000 requests while updating(helm update)
             - should have no 500s
     - rolling updates with ab ✓
+    - ingress with multiple service paths ✓
+        - rewrite path (serves root(/) path to service)
 helm
     - deployment ✓
     - services ✓

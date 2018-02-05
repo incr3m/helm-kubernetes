@@ -46,6 +46,8 @@ app.get('/', async(req, res) => {
     res.status(NOT_READY_PORT).json({ok:false});
     return
   }
+  res.send("Try use /app or /api");
+  return;
   let count = (await client.getAsync(VISITOR_CTR_KEY)) || 0;
   const ret = await client.setAsync(VISITOR_CTR_KEY, Number(count)+1);
   if(ret === 'OK'){
