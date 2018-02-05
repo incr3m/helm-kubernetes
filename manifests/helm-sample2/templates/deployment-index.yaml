@@ -1,0 +1,56 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}-index
+  labels:
+    app: {{ .Values.appName }}-index
+{{ include "labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}-index
+{{ include "labels" . | indent 6 }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}-index
+{{ include "labels" . | indent 8 }}
+    spec:
+      containers:
+        - name: {{ .Values.appName }}-index
+          image: {{.Values.REGISTRY}}/{{.Values.image.name}}:index
+          imagePullPolicy: {{default "Always" .Values.imagePullPolicy}}
+          ports:
+            - containerPort: {{ .Values.appPort }}
+              name: api-port
+          livenessProbe:
+            httpGet:
+              path: /alive
+              port: api-port
+            initialDelaySeconds: 10
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: api-port
+            initialDelaySeconds: 5
+            periodSeconds: 3
+          env:
+{{ include "create_env" . | indent 12 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.serviceName }}-index
+  labels:
+    app: {{ .Values.appName }}-index
+{{ include "labels" . | indent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - port: {{ .Values.appPort }}
+    protocol: TCP
+    name: http
+  selector:
+    app: {{ .Values.appName }}-index
