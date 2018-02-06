@@ -9,6 +9,7 @@ kubernetes
             - try 1000 requests while updating(helm update)
             - should have no 500s
     - rolling updates with ab ✓
+        - ab -n 10000 -c 10 -v 2 http://anfa.ml/
     - ingress with multiple service paths ✓
         - rewrite path (serves root(/) path to service)
     - volume from configmap ✓
