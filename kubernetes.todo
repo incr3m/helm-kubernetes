@@ -11,6 +11,7 @@ kubernetes
     - rolling updates with ab ✓
     - ingress with multiple service paths ✓
         - rewrite path (serves root(/) path to service)
+    - volume from configmap ✓
 helm
     - deployment ✓
     - services ✓

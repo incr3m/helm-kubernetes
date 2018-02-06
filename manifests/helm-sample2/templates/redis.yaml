@@ -20,6 +20,15 @@ spec:
         volumeMounts:
         - mountPath: "/data"
           name: anfa-redis-persistent-storage
+        - mountPath: "/secrets"
+          name: demo-config
+      volumes:
+        - name: demo-config
+          configMap:
+            name: demo-cfg
+            items:
+              - key: game.properties
+                path: game.properties
   volumeClaimTemplates:
   - metadata:
       name: anfa-redis-persistent-storage
